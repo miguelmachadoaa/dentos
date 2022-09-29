@@ -24,6 +24,14 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('blogs', [BlogController::class, 'index'])->name('index');
 
+
+
+    Route::get('blogs/{token}', [BlogController::class, 'getBlogsUser'])->name('getBlogsUser');
+
+    Route::post('blogs/{token}', [BlogController::class, 'postBlogsUser'])->name('postBlogsUser');
+
+    Route::post('buscar', [BlogController::class, 'postBlogsBuscar'])->name('postBlogsBuscar');
+
     Route::get('login', [AuthController::class, 'login'])->name('login');
 
     Route::post('login', [AuthController::class, 'login'])->name('login');

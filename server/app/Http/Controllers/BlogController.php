@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -26,10 +27,67 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getBlogsUser($token)
     {
-        //
+
+            $user=User::where('remember_token', $token)->first();
+
+            if(isset($user->id)){
+
+                 $array = array('error'=>false, 'mensaje' => 'Listado de blogs', 'token'=>$token, 'data'=>Blog::where('id_user', $user->id)->get() );
+
+            }else{
+
+                $array = array('error'=>true, 'mensaje' => 'No se encontro usuario', 'token'=>$token, 'data'=>[]);
+
+            }
+
+            return $array;
+
+
     }
+
+
+    public function postBlogsUser(Request $request, $token)
+    {
+
+            $user=User::where('remember_token', $token)->first();
+
+            if(isset($user->id)){
+
+
+                Blog::create([
+                    'titulo'=>$request->titulo,
+                    'contenido'=>$request->descripcion,
+                    'id_user'=>$user->id,
+                ]);
+
+                 $array = array('error'=>false, 'mensaje' => 'Listado de blogs', 'token'=>$token, 'data'=>Blog::where('id_user', $user->id)->get() );
+
+            }else{
+
+                $array = array('error'=>true, 'mensaje' => 'No se encontro usuario', 'token'=>$token, 'data'=>[]);
+
+            }
+
+            return $array;
+
+
+    }
+
+
+    public function postBlogsBuscar(Request $request)
+    {
+
+        $array = array('error'=>false, 'mensaje' => 'Listado de blogs', 'data'=>Blog::whereDate('created_at', $request->fecha)->get() );
+
+        return $array;
+
+
+    }
+
+
+
 
     /**
      * Store a newly created resource in storage.

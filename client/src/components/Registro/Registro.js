@@ -4,6 +4,8 @@ import useToken from '../../components/App/useToken';
 
 import Login from '../../components/Login/Login';
 
+import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
+
 async function registerUser(credentials) {
    return fetch('http://localhost:8000/api/registro', {
      method: 'POST',
@@ -17,6 +19,8 @@ async function registerUser(credentials) {
 
 export default function Registro() {
 
+  const navigate = useNavigate();
+
   const { token, setToken, logout } = useToken();
 
   const [email, setEmail] = useState();
@@ -25,17 +29,30 @@ export default function Registro() {
 
   const [dob, setDob] = useState();
 
+  const [mensaje, setMensaje] = useState();
+
+  const linkDashboard = async e => {
+    navigate('/dashboard');
+  }
+
   const handleSubmit = async e => {
 
     e.preventDefault();
 
-    const token = await registerUser({
+    const data = await registerUser({
       email,
       password,
       dob,
     });
 
-    setToken(token);
+    if(!data.error){
+      setToken(data);
+      linkDashboard();
+    }else{
+      setMensaje(data.mensaje)
+    }
+
+
   }
 
 
@@ -75,6 +92,8 @@ export default function Registro() {
                       <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                           Si Tienes una cuenta ? <a href="/login" class="font-medium text-primary-600 hover:underline ">Acceder</a>
                       </p>
+
+                      <p class="text-red-600 p-2 text-center w-100 border-gray-300 border font-bold">{mensaje}</p>
                   </form>
               </div>
           </div>

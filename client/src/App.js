@@ -16,6 +16,7 @@ import Preferences from './components/Preferences/Preferences';
 import Login from './components/Login/Login';
 import Registro from './components/Registro/Registro';
 import Blog from './components/Blog/Blog';
+import AddBlog from './components/Blog/AddBlog';
 import useToken from './components/App/useToken';
 
 
@@ -26,11 +27,7 @@ function App() {
 
   const { token, setToken, logout } = useToken();
 
-  if(!token) {
-
-    return <Login setToken={setToken} />
-
-  }
+  
 
   const handledLogout = async e => {
 
@@ -39,6 +36,17 @@ function App() {
     logout();
 
     navigate('/');
+
+  }
+
+
+  const handledLogin = async e => {
+
+    e.preventDefault();
+    
+    logout();
+
+    navigate('login');
 
   }
 
@@ -60,13 +68,28 @@ function App() {
           <Link to="/blog"><a class="mr-5 hover:text-gray-900">Blog</a></Link>
          
         </nav>
-         <Link onClick={handledLogout} to="/">
-          <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Logout
+
+        {
+          token == undefined ?
+          <a  href="/login">
+          <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Acceder
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </a>
+
+            : 
+
+        <Link onClick={handledLogout} to="/">
+          <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Salir
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
           </button>
         </Link>
+        }
+         
       </div>
     </header>
 
@@ -78,8 +101,9 @@ function App() {
           <Route path="/preferences" element={<Preferences  />} />
           <Route path="/dashboard" element={<Dashboard  />} />
           <Route path="/registro" element={<Registro  />} />
+          <Route path="/add" element={<AddBlog  />} />
           <Route path="/login" element={<Login  />} />
-          <Route path="/" element={<Dashboard  />} />
+          <Route path="/" element={<Blog  />} />
         </Routes>
 
       </div>

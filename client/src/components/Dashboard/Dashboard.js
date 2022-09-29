@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useToken from '../../components/App/useToken';
 import Login from '../../components/Login/Login';
@@ -7,16 +7,21 @@ import Login from '../../components/Login/Login';
 
 export default function Dashboard() {
 
+  const navigate = useNavigate();
+
   const { token, setToken, logout } = useToken();
 
   const [posts, setPosts] = useState([]);
 
    useEffect(() => {
-      fetch('http://localhost:8000/api/blogs')
+
+    console.log(token);
+
+      fetch('http://localhost:8000/api/blogs/'+token)
          .then((response) => response.json())
          .then((data) => {
             console.log(data);
-            setPosts(data);
+            setPosts(data.data);
          })
          .catch((err) => {
             console.log(err.message);
@@ -24,8 +29,19 @@ export default function Dashboard() {
    }, []);
 
 
+   const handledAdd = async e => {
+
+    e.preventDefault();
+    
+    navigate('/add');
+
+  }
+
+
+
+
   if (!token) {
-    return <Login setToken={setToken} />;
+    navigate('/login');
   }
 
  
@@ -36,6 +52,14 @@ export default function Dashboard() {
       <div class="container px-5 py-2 mx-auto">
         <div class="flex flex-col text-center w-full mb-2">
           <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Listado de Noticias del Cliente</h1>
+
+          <Link onClick={handledAdd} to="/addblog">
+          <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Agragar blog
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </Link>
       
         </div>
       </div>
