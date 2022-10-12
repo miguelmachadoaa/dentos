@@ -1,5 +1,5 @@
-# dentos
-dentos
+# DentOs
+DentOs
 
 Para realizar la instalacion <br><br>
 
