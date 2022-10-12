@@ -1,11 +1,7 @@
 # dentos
 dentos
 
-Para realizar la instalacion <br><br>
-
-Una vez clonado el proyecto encontrara dos carpetas<br><br>
-
-Cliente y Server <br>
+Para realizar la instalacion, una vez clonado el proyecto encontrara dos carpetas: Cliente y Server <br>
 
 <br> El Server <br>
 
